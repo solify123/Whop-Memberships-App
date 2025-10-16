@@ -151,7 +151,6 @@ export async function startUpdater() {
                     }));
                     if (incOps.length > 0) {
                         await (ProductModel as any).bulkWrite(incOps, { ordered: false });
-                        await new Promise(resolve => setTimeout(resolve, 200))
                     }
                 }
 
