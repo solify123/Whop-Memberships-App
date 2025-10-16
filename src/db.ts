@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import config from './config';
 
 let isConnected = false;
 
@@ -16,9 +15,8 @@ export async function connectToDatabase(uri?: string): Promise<typeof mongoose> 
   });
 
   isConnected = true;
+  console.log('✅ Connected to MongoDB database successfully');
   return mongoose;
 }
 
 export default connectToDatabase;
-
-
