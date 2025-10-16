@@ -11,18 +11,17 @@ export interface Config {
   port: number;
   nodeEnv: string;
   baseUrl: string;
-  productsUrl: string;
   membershipsUrl: string;
   messagesUrl: string;
 }
 
 const config: Config = {
   // Whop API Configuration
-  whopAppId: process.env.WHOP_APP_ID || 'app_9ywTRXHkgq2gtA',
-  whopAgentUserId: process.env.WHOP_AGENT_USER_ID || 'user_F6eSYcqz7e560',
-  whopCompanyId: process.env.WHOP_COMPANY_ID || 'biz_sWgLZiLIGrPlj3',
-  whopApiKey: process.env.WHOP_API_KEY || 'Y1NTaf4evLV7tIw2oclIFKzpSAOxiOLcKMw1xEXpD1A',
-  v2ProductsToken: process.env.V2_PRODUCTS_TOKEN || 'YQTLCygWYbVDuCk88fskCAnKpthL2PoHKXcA8NZtQDE',
+  whopAppId: process.env.WHOP_APP_ID || 'app_LRTKwtJp66rRZ7',
+  whopAgentUserId: process.env.WHOP_AGENT_USER_ID || 'user_iUr0YCJOHkmrU',
+  whopCompanyId: process.env.WHOP_COMPANY_ID || 'biz_1ZH7VJrbsBzY1D',
+  whopApiKey: process.env.WHOP_API_KEY || 'qIudbGoxB8VAxUGN1Oc1dCN5qvEywZF7QvifdmHyoss',
+  v2ProductsToken: process.env.V2_PRODUCTS_TOKEN || 'FEKXFF02WWQMWp6k6M5Ilqh7Sf0Blt6Q4aj6tmH1QM',
   
   // Server Configuration
   port: parseInt(process.env.PORT || '3000', 10),
@@ -30,7 +29,6 @@ const config: Config = {
   
   // API URLs
   baseUrl: 'https://api.whop.com',
-  productsUrl: '/api/v2/products?page=1&per=10',
   membershipsUrl: '/api/v2/memberships',
   messagesUrl: '/api/v2/messages'
 };

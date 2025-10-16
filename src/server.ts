@@ -47,8 +47,6 @@ app.get('/products', async (req: Request, res: Response) => {
       });
     }
 
-    console.log('[Server] Active memberships by product:', activeByProduct);
-
     res.render('products', {
       products,
       activeByProduct,
