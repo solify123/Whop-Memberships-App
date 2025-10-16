@@ -113,9 +113,6 @@ app.post('/products/:productId', async (req: Request, res: Response) => {
   const { message } = req.body;
   try {
 
-    console.log(`[Server] Sending message for product: ${productId}`);
-    console.log(`[Server] Message: "${message}"`);
-
     if (!message || message.trim() === '') {
       return res.redirect(`/products/${productId}?error=Message cannot be empty`);
     }
@@ -125,30 +122,16 @@ app.post('/products/:productId', async (req: Request, res: Response) => {
     const memberships: Membership[] = membershipsResult.data;
     const productMemberships = memberships.filter(m => m.product === productId);
 
-    console.log(`[Server] Found ${productMemberships.length} memberships to send message to`);
-
     // Send messages to all memberships
     let successCount = 0;
     let errorCount = 0;
     const errors: string[] = [];
-
-    console.log('\n[MESSAGE SEND START]');
-    console.log(`Product: ${productId}`);
-    console.log(`Message: "${message}"`);
-    console.log(`Target memberships: ${productMemberships.length}`);
-    console.log('='.repeat(60));
 
     for (let i = 0; i < productMemberships.length; i++) {
       const membership = productMemberships[i];
       const userId = membership.user;
       const email = membership.email || 'no email';
       const membershipId = membership.id;
-
-      console.log(`\n[MESSAGE ${i + 1}/${productMemberships.length}]`);
-      console.log(`  Membership ID: ${membershipId}`);
-      console.log(`  User ID: ${userId}`);
-      console.log(`  Email: ${email}`);
-      console.log(`  Message: "${message}"`);
 
       if (!userId) {
         errorCount++;
@@ -179,13 +162,6 @@ app.post('/products/:productId', async (req: Request, res: Response) => {
       }
     }
 
-    console.log('='.repeat(60));
-    console.log('[MESSAGE SEND COMPLETE]');
-    console.log(`  Total: ${productMemberships.length}`);
-    console.log(`  Success: ${successCount}`);
-    console.log(`  Failed: ${errorCount}`);
-    console.log('='.repeat(60));
-
     // Redirect with result message
     let redirectMsg: string;
     if (errorCount === 0) {
@@ -215,7 +191,7 @@ app.use((req: Request, res: Response) => {
 // Start server
 const PORT = config.port;
 app.listen(PORT, () => {
-  console.log(`🚀 Whop Demo Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Whop Dashboard Server running on http://localhost:${PORT}`);
   console.log(`📊 Products: http://localhost:${PORT}/products`);
   console.log(`🔧 Environment: ${config.nodeEnv}`);
 });

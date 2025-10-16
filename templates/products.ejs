@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - Whop Demo Dashboard</title>
+    <title>Products - Whop Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen flex flex-col">
     <nav class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-xl font-semibold text-gray-900">Whop Demo Dashboard</h1>
+                    <h1 class="text-xl font-semibold text-gray-900">Whop Dashboard</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <a href="/products" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Products</a>
@@ -20,7 +20,7 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 flex-1">
         <% if (typeof error !== 'undefined' && error) { %>
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <strong>Error:</strong> <%= error %>
@@ -64,10 +64,10 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t mt-12">
+    <footer class="bg-white border-t">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <p class="text-center text-gray-500 text-sm">
-                Whop Demo Dashboard - Node.js Server
+                Whop Dashboard
             </p>
         </div>
     </footer>

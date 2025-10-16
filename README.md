@@ -1,4 +1,4 @@
-# Whop Demo Dashboard - Node.js Server
+# Whop Dashboard - Node.js Server
 
 A Node.js web application for managing Whop products and sending messages to members.
 
