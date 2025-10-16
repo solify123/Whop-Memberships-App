@@ -180,12 +180,12 @@ app.post('/products/:productId', async (req: Request, res: Response) => {
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('[Server] Unhandled error:', err);
-  res.status(500).render('error', { error: err.message });
+  res.status(500).render('error', { error: err.message, url: req.url });
 });
 
 // 404 handler
 app.use((req: Request, res: Response) => {
-  res.status(404).render('error', { error: 'Page not found' });
+  res.status(404).render('error', { error: 'Page not found', url: req.url });
 });
 
 // Start server
