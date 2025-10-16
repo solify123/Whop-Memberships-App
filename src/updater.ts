@@ -136,13 +136,13 @@ export async function startUpdater() {
                     }));
                     if (incOps.length > 0) {
                         await (ProductModel as any).bulkWrite(incOps, { ordered: false });
-                        new Promise(resolve => setTimeout(resolve, 200))
+                        await new Promise(resolve => setTimeout(resolve, 500))
                         console.log(`[Updater] incremented activeUsers on ${incOps.length} products (page ${currentPage})`);
                     }
                 }
 
                 currentPage++;
-                await new Promise(resolve => setTimeout(resolve, 200))
+                await new Promise(resolve => setTimeout(resolve, 1000))
             }
             console.log(`[WhopClient] fetched memberships: ${allMemberships.length}`)
 
