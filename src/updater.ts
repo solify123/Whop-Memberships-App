@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import config from './config'
 import ProductModel from './models/Product';
 import MembershipModel from './models/Membership';
+import SyncStateModel from './models/SyncState';
 
 const INTERVAL_MS = parseInt(process.env.UPDATE_INTERVAL_MS || '60000', 10); // default 60s
 
@@ -89,8 +90,15 @@ export async function startUpdater() {
             let currentPage = 1;
             let total_page = 1;
 
+            let lastSyncState = await SyncStateModel.findOne({ key: 'memberships' });
+            if (lastSyncState) currentPage = lastSyncState.lastPageProcessed + 1;
+            console.log(`[WhopClient] starting from page ${currentPage}`);
             while (true) {
-                if (currentPage > total_page) break;
+                if (currentPage > total_page && !lastSyncState) {
+                    await SyncStateModel.updateOne({ key: 'memberships' }, { $set: { lastPageProcessed: 0 } });
+                    console.log('reset lastPageProcessed');
+                    break;
+                }
                 const response = await axios.get(`${config.baseUrl}${config.membershipsUrl}?page=${currentPage}&per=50`, {
                     headers: {
                         'Authorization': `Bearer ${config.v2ProductsToken}`,
@@ -118,6 +126,13 @@ export async function startUpdater() {
                         }
                     }));
                     await (MembershipModel as any).bulkWrite(ops, { ordered: false });
+                    let existingSyncState = await SyncStateModel.findOne({ key: 'memberships' });
+                    if (existingSyncState) {
+                        existingSyncState.lastPageProcessed = currentPage;
+                        await existingSyncState.save();
+                    } else {
+                        await SyncStateModel.create({ key: 'memberships', lastPageProcessed: currentPage });
+                    }
                     console.log(`[WhopClient] upserted ${ops.length} memberships (page ${currentPage})`);
 
                     // Increment activeUsers for products matching these memberships
@@ -136,13 +151,12 @@ export async function startUpdater() {
                     }));
                     if (incOps.length > 0) {
                         await (ProductModel as any).bulkWrite(incOps, { ordered: false });
-                        await new Promise(resolve => setTimeout(resolve, 500))
-                        console.log(`[Updater] incremented activeUsers on ${incOps.length} products (page ${currentPage})`);
+                        await new Promise(resolve => setTimeout(resolve, 200))
                     }
                 }
 
                 currentPage++;
-                await new Promise(resolve => setTimeout(resolve, 1000))
+                await new Promise(resolve => setTimeout(resolve, 200))
             }
             console.log(`[WhopClient] fetched memberships: ${allMemberships.length}`)
 
