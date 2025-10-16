@@ -1,6 +1,9 @@
 import axios from 'axios';
 import config from './config';
 import { WhopServerSdk } from "@whop/api";
+import mongoose from 'mongoose';
+import ProductModel from './models/Product';
+import MembershipModel from './models/Membership';
 
 export const whopSdk = WhopServerSdk({
   appId: config.whopAppId,
@@ -73,32 +76,19 @@ export class WhopClient {
 
   async getProducts(): Promise<ApiResponse<Product[]>> {
     try {
-      const allProducts: Product[] = [];
-      let currentPage = 1;
-      let hasMorePages = true;
-
-      while (hasMorePages) {
-        const response = await axios.get(`${this.baseURL}/api/v2/products?page=${currentPage}&per=50`, {
-          headers: this.getHeaders(),
-          timeout: 3000
-        });
-
-        const products = response.data.data || [];
-        allProducts.push(...products);
-        const total_page = 3;
-
-        hasMorePages = currentPage < total_page;
-        currentPage++;
-        if (currentPage > 100) {
-          console.warn('[WhopClient] Reached maximum page limit (100), stopping pagination');
-          break;
-        }
-
+      // Read from MongoDB
+      if (mongoose.connection.readyState !== 1) {
+        return { data: [], error: 'Database not connected' };
       }
-
-      console.log(`[WhopClient] ✅ Fetched ${allProducts.length} products total`);
-      console.log(`[WhopClient] Processed ${currentPage - 1} pages`);
-      return { data: allProducts, error: null };
+      const docs = await ProductModel.find({}).lean();
+      const products: Product[] = docs.map((p: any) => ({
+        id: p.productId,
+        name: p.title,
+        title: p.title,
+        visibility: p.visibility,
+        activeUsersCount: p.activeUsers,
+      }));
+      return { data: products, error: null };
     } catch (error: any) {
       console.error('[WhopClient] Error fetching products:', error.message);
       return { data: [], error: error.message };
@@ -107,42 +97,20 @@ export class WhopClient {
 
   async getMemberships(): Promise<ApiResponse<Membership[]>> {
     try {
-      const allMemberships: Membership[] = [];
-      let currentPage = 1;
-      let hasMorePages = true;
-
-      // while (hasMorePages) {
-      console.log(`[WhopClient] Fetching memberships page ${currentPage}...`);
-
-      const response = await axios.get(`${this.baseURL}${config.membershipsUrl}?page=${currentPage}&per=50`, {
-        headers: this.getHeaders(),
-        timeout: 3000
-      });
-
-      const memberships = response.data.data || [];
-      allMemberships.push(...memberships);
-
-      // Check multiple possible pagination structures
-      const pagination = response.data.pagination || response.data.meta;
-      const totalPages = 5;
-      const currentPageNum = pagination?.current_page || currentPage;
-      const perPage = pagination?.per_page || 100;
-      const total = pagination?.total || pagination?.total_count || 0;
-
-      hasMorePages = currentPage < totalPages;
-      currentPage++;
-
-
-
-      // Additional safety: if we got fewer memberships than expected per page, we might be at the end
-      if (memberships.length < perPage && currentPage <= totalPages) {
-        console.log(`[WhopClient] Got ${memberships.length} memberships (less than ${perPage} per page), likely at end`);
+      // Read from MongoDB
+      if (mongoose.connection.readyState !== 1) {
+        return { data: [], error: 'Database not connected' };
       }
-      // }
-
-      console.log(`[WhopClient] ✅ Fetched ${allMemberships.length} memberships total`);
-      console.log(`[WhopClient] Processed ${currentPage - 1} pages`);
-      return { data: allMemberships, error: null };
+      const docs = await MembershipModel.find({}).lean();
+      const memberships: Membership[] = docs.map((m: any) => ({
+        id: m.membershipId,
+        user: m.userId,
+        product: m.productId,
+        email: m.email,
+        status: 'completed',
+        valid: true,
+      }));
+      return { data: memberships, error: null };
     } catch (error: any) {
       console.error('[WhopClient] Error fetching memberships:', error.message);
       return { data: [], error: error.message };
