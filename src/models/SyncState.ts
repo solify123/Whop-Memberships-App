@@ -15,3 +15,5 @@ const SyncStateSchema = new Schema<SyncStateDoc>({
 export const SyncStateModel: Model<SyncStateDoc> = mongoose.models.SyncState || mongoose.model<SyncStateDoc>('SyncState', SyncStateSchema);
 
 export default SyncStateModel;
+
+

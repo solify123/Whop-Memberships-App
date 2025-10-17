@@ -1,7 +1,7 @@
 {
   "name": "whop-demo-server",
   "version": "1.0.0",
-  "description": "Whop Demo Dashboard - Node.js Server",
+  "description": "Whop Demo API Server - Node.js Backend",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
@@ -20,14 +20,12 @@
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "mongoose": "^8.19.1",
     "pm2": "^6.0.13"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.3",
     "@types/node": "^24.7.2",
     "@whop-apps/dev-proxy": "^0.0.1-canary.117",
@@ -38,8 +36,8 @@
   },
   "keywords": [
     "whop",
-    "dashboard",
     "api",
+    "backend",
     "nodejs"
   ],
   "author": "Whop Demo",
