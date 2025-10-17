@@ -24,7 +24,7 @@ const config: Config = {
   v2ProductsToken: process.env.V2_PRODUCTS_TOKEN || 'FEKXFF02WWQMWp6k6M5Ilqh7Sf0Blt6Q4aj6tmH1QM',
   
   // Server Configuration
-  port: parseInt(process.env.PORT || '5692', 10),
+  port: parseInt(process.env.PORT || '8828', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
   
   // API URLs

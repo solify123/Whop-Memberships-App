@@ -9,10 +9,6 @@ module.exports = {
       instances: 1,
       autorestart: true,
       watch: false,
-      env: {
-        NODE_ENV: "development",
-        PORT: "3000",
-      },
     },
     {
       name: "whop-updater",
@@ -23,9 +19,6 @@ module.exports = {
       instances: 1,
       autorestart: true,
       watch: false,
-      env: {
-        NODE_ENV: "development",
-      },
     },
   ],
 };
