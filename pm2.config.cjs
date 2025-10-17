@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "whop-backend",
+      name: "whop-message-server",
       script: "src/server.ts",
       interpreter: "node",
       node_args: ["-r", "ts-node/register/transpile-only"],
