@@ -2,10 +2,10 @@
   "name": "whop-demo-server",
   "version": "1.0.0",
   "description": "Whop Demo API Server - Node.js Backend",
-  "main": "dist/server.js",
+  "main": "src/server.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node src/server.js",
+    "start": "ts-node src/server.ts",
     "dev": "nodemon --exec ts-node src/server.ts",
     "dev:updater": "ts-node src/updater.ts",
     "dev:build": "tsc && npm start",
