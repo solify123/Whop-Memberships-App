@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import config from './config';
 import WhopClient, { Product, Membership } from './whopClient';
 import connectToDatabase from './db';
@@ -13,6 +14,10 @@ const whopClient = new WhopClient();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the React app build directory
+const frontendBuildPath = path.join(__dirname, '../dist');
+app.use(express.static(frontendBuildPath));
 
 // API Routes
 app.get('/api/products', async (req: Request, res: Response) => {
@@ -107,9 +112,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: err.message });
 });
 
-// 404 handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({ error: 'Endpoint not found' });
+// Catch-all handler: send back React's index.html file for client-side routing
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 
 // Start server
