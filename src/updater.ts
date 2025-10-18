@@ -138,7 +138,7 @@ export async function startUpdater() {
                     // Increment activeUsers for products matching these memberships
                     const countByProduct: Record<string, number> = {};
                     for (const m of memberships) {
-                        const productId = m.product;
+                        const productId = m.productId;
                         if (!productId) continue;
                         countByProduct[productId] = (countByProduct[productId] || 0) + 1;
                     }
